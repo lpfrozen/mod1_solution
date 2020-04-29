@@ -1,34 +1,68 @@
-// (function () {
-// 'use strict';
-// angular.module('LunchCheck', [])
-// .controller('LunchCheckController', LunchCheckController);
-//
-// LunchCheckController.$inject = ['$scope'];
-// function LunchCheckController($scope) {
-//   $scope.checkdisplay = function () {
-//     if($scope.menu!=null&&$scope.menu!=''&&$scope.menu!=undefined)
-//     {
-// var menulist=$scope.menu.trim().split(',');
-// var itemcount=0;
-// for(var i=0;i<menulist.length;i++){
-//   var item=menulist[i].trim();
-//   if(item!=null&&item!=''&&item!=undefined)
-//   itemcount++;
-// }
-// if(itemcount==0)
-//     $scope.message ="";
-// else if(itemcount<=3)
-// {
-//     $scope.message = "Enjoy ";
-//     $scope.styleclass='green';
-// }
-// else{
-//       $scope.message = "Too much ";
-//       $scope.styleclass='red';
-// }
-// }
-//   };
-// }
-//
-// })();
-!function(){"use strict";function e(e){e.checkdisplay=function(){if(null!=e.menu&&""!=e.menu&&null!=e.menu){for(var n=e.menu.trim().split(","),l=0,s=0;s<n.length;s++){var u=n[s].trim();null!=u&&""!=u&&null!=u&&l++}0==l?e.message="":l<=3?(e.message="Enjoy ",e.styleclass="green"):(e.message="Too much ",e.styleclass="red")}}}angular.module("LunchCheck",[]).controller("LunchCheckController",e),e.$inject=["$scope"]}();
+(function () {
+'use strict';
+
+const NO_DATA = "Please, enter data first.";
+const OK_ENJOY = "Enjoy!";
+const OK_TOOMUCH = "Too much!";
+
+angular.module('LunchCheck', [])
+
+.controller('LunchController', LunchController);
+
+LunchController.$inject = ['$scope'];
+
+function LunchController($scope){
+
+  $scope.breakfastList = '';
+  $scope.message = '';
+  $scope.color = '';
+
+  $scope.checkTooMuchLunch = function(){
+    if ($scope.breakfastList == ''){
+        $scope.message = 'Please, enter data first.';
+        $scope.color = 'red';
+
+    }else{
+      $scope.message = getStringSplitted($scope.breakfastList);
+      if($scope.message == NO_DATA){
+          $scope.color = 'red';
+      }else{
+          $scope.color = 'green';
+      }
+
+
+    }
+
+  };
+
+
+  //gets a string splitted in an array
+  //and returns a message
+  function getStringSplitted(stringToSplit){
+
+    var separator = ",";
+    var arrayOfItems = stringToSplit.split(separator);
+    var finalLength = 0; //stores the number of items without empty spaces
+
+    //not taking into consideration empty items
+    var totalItemsEmpty = 0;
+    var counter;
+    for (counter = 0; counter < arrayOfItems.length; counter++){
+      if (arrayOfItems[counter].trim() == ''){
+        totalItemsEmpty++;
+      }
+    }
+    finalLength = arrayOfItems.length - totalItemsEmpty;
+
+    if(finalLength == 0){
+      return NO_DATA;
+    }
+    if (finalLength <= 3){
+      return OK_ENJOY;
+    }
+
+    return OK_TOOMUCH;
+  }
+}
+
+})();

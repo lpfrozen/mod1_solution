@@ -1,2 +1,4 @@
-# mod1-solution
-SPA using AJs module 1 assignment 1
+# angularJS_mod1Solution
+container for module1 assigment angularJS course
+I've taken the approach of empty items.
+I've considered a list of blank spaces with commas as empty entry.
